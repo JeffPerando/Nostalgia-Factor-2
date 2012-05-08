@@ -1,0 +1,1 @@
+This folder is where base class edits go (Aka Minecraft source files we've edited)
