@@ -12,8 +12,9 @@ import java.util.List;
 public class BiomeGenD120 extends BiomeGenBase
 {
 
-    protected BiomeGenD120()
+    protected BiomeGenD120(int par1)
     {
+    	super(par1);
         spawnableCreatureList.clear();
     }
 }

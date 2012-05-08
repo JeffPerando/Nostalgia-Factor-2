@@ -16,10 +16,8 @@ import java.util.Random;
 //            WorldGenCactus1102, WorldGenLiquids, Material, ChunkCoordIntPair, 
 //            EnumCreatureType, ChunkPosition, IProgressUpdate
 
-public class ChunkProvider120
-    implements IChunkProvider
+public class ChunkProvider120 implements IChunkProvider
 {
-
     private Random rand;
     private NoiseGeneratorOctaves120 noiseGen1;
     private NoiseGeneratorOctaves120 noiseGen2;
@@ -235,9 +233,8 @@ public class ChunkProvider120
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
         Chunk chunk = new Chunk(worldObj, abyte0, i, j);
-        biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorDataLegacy(biomesForGeneration, i * 16, j * 16, 16, 16);
-        double ad[] = worldObj.getWorldChunkManager().temperatureLegacy;
-        generateTerrain(i, j, abyte0, biomesForGeneration, ad);
+        biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, i * 16, j * 16, 16, 16);
+        generateTerrain(i, j, abyte0, biomesForGeneration, field_4178_w);
         replaceBlocksForBiome(i, j, abyte0, biomesForGeneration);
         caveGenerator.generate(this, worldObj, i, j, abyte0);
         chunk.generateSkylightMap();
@@ -252,8 +249,6 @@ public class ChunkProvider120
         }
         double d = 684.41200000000003D;
         double d1 = 684.41200000000003D;
-        double ad1[] = worldObj.getWorldChunkManager().temperatureLegacy;
-        double ad2[] = worldObj.getWorldChunkManager().humidityLegacy;
         noise5 = noiseGen5.func_4109_a(noise5, i, k, l, j1, 1.121D, 1.121D, 0.5D);
         noise6 = noiseGen7.func_4109_a(noise6, i, k, l, j1, 200D, 200D, 0.5D);
         noise3 = noiseGen3.generateNoiseOctaves(noise3, i, j, k, l, i1, j1, d / 80D, d1 / 160D, d / 80D);
@@ -268,9 +263,7 @@ public class ChunkProvider120
             for(int l2 = 0; l2 < j1; l2++)
             {
                 int i3 = l2 * i2 + i2 / 2;
-                double d2 = ad1[k2 * 16 + i3];
-                double d3 = ad2[k2 * 16 + i3] * d2;
-                double d4 = 1.0D - d3;
+                double d4 = 1.0D - d1;
                 d4 *= d4;
                 d4 *= d4;
                 d4 = 1.0D - d4;
@@ -356,11 +349,11 @@ public class ChunkProvider120
         BlockSand.fallInstantly = true;
         int k = i * 16;
         int l = j * 16;
-        BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAtLegacy(k + 16, l + 16);
-        rand.setSeed(worldObj.getWorldSeed());
+        BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(k + 16, l + 16);
+        rand.setSeed(worldObj.getSeed());
         long l1 = (rand.nextLong() / 2L) * 2L + 1L;
         long l2 = (rand.nextLong() / 2L) * 2L + 1L;
-        rand.setSeed((long)i * l1 + (long)j * l2 ^ worldObj.getWorldSeed());
+        rand.setSeed((long)i * l1 + (long)j * l2 ^ worldObj.getSeed());
         double d = 0.25D;
         if(rand.nextInt(4) == 0)
         {
@@ -459,19 +452,25 @@ public class ChunkProvider120
             (new WorldGenMinable(Block.oreLapis.blockID, 6)).generate(worldObj, rand, i8, l11, l14);
         }
 
+        /**
+         * And this is where obfuscated code sucks. -Hawk
+         */
+        
+        
+    	int placeholderInt;
         if(rand.nextInt(4) == 0)
         {
             int k4 = k + rand.nextInt(16) + 8;
-            int j8 = rand.nextInt(worldObj.field_35472_c);
+            int j8 = rand.nextInt(placeholderInt);
             int i12 = l + rand.nextInt(16) + 8;
             (new WorldGenLakes(Block.waterStill.blockID)).generate(worldObj, rand, k4, j8, i12);
         }
         if(rand.nextInt(8) == 0)
         {
             int l4 = k + rand.nextInt(16) + 8;
-            int k8 = rand.nextInt(rand.nextInt(worldObj.field_35472_c - 8) + 8);
+            int k8 = rand.nextInt(rand.nextInt(placeholderInt - 8) + 8);
             int j12 = l + rand.nextInt(16) + 8;
-            if(k8 < worldObj.field_35470_e || rand.nextInt(10) == 0)
+            if(k8 < placeholderInt || rand.nextInt(10) == 0)
             {
                 (new WorldGenLakes(Block.lavaStill.blockID)).generate(worldObj, rand, l4, k8, j12);
             }
@@ -601,7 +600,7 @@ public class ChunkProvider120
             (new WorldGenLiquids(Block.lavaMoving.blockID)).generate(worldObj, rand, i22, k23, k24);
         }
 
-        field_4178_w = worldObj.getWorldChunkManager().getTemperaturesLegacy(field_4178_w, k + 8, l + 8, 16, 16);
+        field_4178_w = worldObj.getWorldChunkManager().getTemperatures(field_4178_w, k + 8, l + 8, 16, 16);
         for(int k19 = k + 8; k19 < k + 8 + 16; k19++)
         {
             for(int j22 = l + 8; j22 < l + 8 + 16; j22++)
@@ -672,4 +671,18 @@ public class ChunkProvider120
     {
         return "RandomLevelSource";
     }
+
+	@Override
+	public List getPossibleCreatures(EnumCreatureType var1, int var2, int var3,
+			int var4) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ChunkPosition findClosestStructure(World var1, String var2,
+			int var3, int var4, int var5) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

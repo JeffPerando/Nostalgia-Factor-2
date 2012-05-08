@@ -15,8 +15,7 @@ import java.util.Random;
 //            WorldGenDungeons, SpawnerAnimals, ChunkCoordIntPair, IProgressUpdate, 
 //            EnumCreatureType, ChunkPosition
 
-public class ChunkProvider181
-    implements IChunkProvider
+public class ChunkProvider181 implements IChunkProvider
 {
 
     private Random rand;
@@ -52,7 +51,7 @@ public class ChunkProvider181
         stoneNoise = new double[256];
         caveGenerator = new MapGenCaves();
         strongholdGenerator = new MapGenStronghold();
-        villageGenerator = new MapGenVillage();
+        villageGenerator = new MapGenVillage(); //Again, I have no idea what it's complaining about.
         mineshaftGenerator = new MapGenMineshaft();
         ravineGenerator = new MapGenRavine();
         unusedIntArray32x32 = new int[32][32];
@@ -393,10 +392,10 @@ public class ChunkProvider181
         int k = i * 16;
         int l = j * 16;
         BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(k + 16, l + 16);
-        rand.setSeed(worldObj.getWorldSeed());
+        rand.setSeed(worldObj.getSeed());
         long l1 = (rand.nextLong() / 2L) * 2L + 1L;
         long l2 = (rand.nextLong() / 2L) * 2L + 1L;
-        rand.setSeed((long)i * l1 + (long)j * l2 ^ worldObj.getWorldSeed());
+        rand.setSeed((long)i * l1 + (long)j * l2 ^ worldObj.getSeed());
         boolean flag = false;
         if(mapFeaturesEnabled)
         {
@@ -500,4 +499,18 @@ public class ChunkProvider181
             return null;
         }
     }
+
+	@Override
+	public List getPossibleCreatures(EnumCreatureType var1, int var2, int var3,
+			int var4) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ChunkPosition findClosestStructure(World var1, String var2,
+			int var3, int var4, int var5) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

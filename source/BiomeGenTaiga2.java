@@ -14,8 +14,9 @@ import java.util.Random;
 public class BiomeGenTaiga2 extends BiomeGenBase
 {
 
-    protected BiomeGenTaiga2()
+    protected BiomeGenTaiga2(int par1)
     {
+    	super(par1);
         spawnableCreatureList.add(new SpawnListEntry(net.minecraft.src.EntityWolf.class, 5, 4, 4));
     }
 

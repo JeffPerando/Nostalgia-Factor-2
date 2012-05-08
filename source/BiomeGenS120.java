@@ -11,7 +11,9 @@ package net.minecraft.src;
 public class BiomeGenS120 extends BiomeGenBase
 {
 
-    protected BiomeGenS120()
+    protected BiomeGenS120(int par1)
     {
+    	super(par1);
+    	
     }
 }

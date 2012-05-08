@@ -16,8 +16,7 @@ import java.util.Random;
 //            WorldGenLiquids, Material, WorldChunkManager, ChunkCoordIntPair, 
 //            BiomeGenBase, EnumCreatureType, ChunkPosition, IProgressUpdate
 
-public class ChunkProvider11201
-    implements IChunkProvider
+public class ChunkProvider11201 implements IChunkProvider
 {
 
     private Random rand;
@@ -352,10 +351,10 @@ public class ChunkProvider11201
         BlockSand.fallInstantly = true;
         int k = i * 16;
         int l = j * 16;
-        rand.setSeed(worldObj.getWorldSeed());
+        rand.setSeed(worldObj.getSeed());
         long l1 = (rand.nextLong() / 2L) * 2L + 1L;
         long l2 = (rand.nextLong() / 2L) * 2L + 1L;
-        rand.setSeed((long)i * l1 + (long)j * l2 ^ worldObj.getWorldSeed());
+        rand.setSeed((long)i * l1 + (long)j * l2 ^ worldObj.getSeed());
         double d = 0.25D;
         for(int i1 = 0; i1 < 8; i1++)
         {
@@ -421,7 +420,7 @@ public class ChunkProvider11201
             (new WorldGenMinable(Block.oreDiamond.blockID, 7)).generate(worldObj, rand, l5, i8, i13);
         }
 
-        if(worldObj.getWorldInfo().getGeneratorType() == 1)
+        if(worldObj.getWorldInfo().getGameType() == 1)
         {
             for(int k3 = 0; k3 < 1; k3++)
             {
@@ -451,7 +450,7 @@ public class ChunkProvider11201
         {
             int k13 = k + rand.nextInt(16) + 8;
             int j16 = l + rand.nextInt(16) + 8;
-            ((WorldGenerator)obj).func_517_a(1.0D, 1.0D, 1.0D);
+            ((WorldGenerator)obj).setScale(1.0D, 1.0D, 1.0D);
             ((WorldGenerator)obj).generate(worldObj, rand, k13, worldObj.getHeightValue(k13, j16), j16);
         }
 
@@ -528,8 +527,8 @@ public class ChunkProvider11201
         {
             for(int i16 = l + 8 + 0; i16 < l + 8 + 16; i16++)
             {
-                int l18 = worldObj.findTopSolidBlockLegacy(i11, i16);
-                if(snowWorld && l18 > 0 && l18 < 128 && worldObj.getBlockId(i11, l18, i16) == 0 && worldObj.getBlockMaterial(i11, l18 - 1, i16).getIsSolid() && worldObj.getBlockMaterial(i11, l18 - 1, i16) != Material.ice)
+                int l18 = worldObj.getPrecipitationHeight(i11, i16);
+                if(snowWorld && l18 > 0 && l18 < 128 && worldObj.getBlockId(i11, l18, i16) == 0 && worldObj.getBlockMaterial(i11, l18 - 1, i16).isSolid() && worldObj.getBlockMaterial(i11, l18 - 1, i16) != Material.ice)
                 {
                     worldObj.setBlockWithNotify(i11, l18, i16, Block.snow.blockID);
                 }
@@ -538,23 +537,6 @@ public class ChunkProvider11201
         }
 
         BlockSand.fallInstantly = false;
-    }
-
-    public List func_40377_a(EnumCreatureType enumcreaturetype, int i, int j, int k)
-    {
-        WorldChunkManager worldchunkmanager = worldObj.getWorldChunkManager();
-        if(worldchunkmanager == null)
-        {
-            return null;
-        }
-        BiomeGenBase biomegenbase = worldchunkmanager.getBiomeGenAtChunkCoord(new ChunkCoordIntPair(i >> 4, k >> 4));
-        if(biomegenbase == null)
-        {
-            return null;
-        } else
-        {
-            return biomegenbase.getSpawnableList(enumcreaturetype);
-        }
     }
 
     public ChunkPosition func_40376_a(World world, String s, int i, int j, int k)
@@ -591,4 +573,17 @@ public class ChunkProvider11201
     {
         return "RandomLevelSource";
     }
+
+	@Override
+	public List getPossibleCreatures(EnumCreatureType var1, int var2, int var3, int var4)
+	{
+        BiomeGenBase var5 = this.worldObj.getBiomeGenForCoords(var2, var4);
+        return var5 == null ? null : var5.getSpawnableList(var1);
+	}
+
+	@Override
+	public ChunkPosition findClosestStructure(World var1, String var2, int var3, int var4, int var5) 
+	{
+		return null;
+	}
 }

@@ -18,8 +18,7 @@ import java.util.Random;
 //            WorldGenLiquids, Material, ChunkCoordIntPair, MapGenBase, 
 //            EnumCreatureType, ChunkPosition, IProgressUpdate
 
-public class ChunkProvider173
-    implements IChunkProvider
+public class ChunkProvider173 implements IChunkProvider
 {
 
     private Random rand;
@@ -70,7 +69,7 @@ public class ChunkProvider173
         noiseGen6 = new NoiseGeneratorOctaves173(rand, 16);
         mobSpawnerNoise = new NoiseGeneratorOctaves173(rand, 8);
         strongholdGenerator = new MapGenStronghold();
-        villageGenerator = new MapGenVillage();
+        villageGenerator = new MapGenVillage(); //I honestly have no idea what the hell it's complaining about.
         mineshaftGenerator = new MapGenMineshaft();
         ravineGenerator = new MapGenRavine();
     }
@@ -260,7 +259,7 @@ public class ChunkProvider173
         rand.setSeed((long)i * 0x4f9939f508L + (long)j * 0x1ef1565bd5L);
         byte abyte0[] = new byte[32768];
         Chunk chunk = new Chunk(worldObj, abyte0, i, j);
-        biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorDataLegacy(biomesForGeneration, i * 16, j * 16, 16, 16);
+        biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, i * 16, j * 16, 16, 16);
         double ad[] = worldObj.getWorldChunkManager().temperatureLegacy;
         generateTerrain(i, j, abyte0, biomesForGeneration, ad);
         replaceBlocksForBiome(i, j, abyte0, biomesForGeneration);
@@ -392,11 +391,11 @@ public class ChunkProvider173
         BlockSand.fallInstantly = true;
         int k = i * 16;
         int l = j * 16;
-        BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAtLegacy(k + 16, l + 16);
-        rand.setSeed(worldObj.getWorldSeed());
+        BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(k + 16, l + 16);
+        rand.setSeed(worldObj.getSeed());
         long l1 = (rand.nextLong() / 2L) * 2L + 1L;
         long l2 = (rand.nextLong() / 2L) * 2L + 1L;
-        rand.setSeed((long)i * l1 + (long)j * l2 ^ worldObj.getWorldSeed());
+        rand.setSeed((long)i * l1 + (long)j * l2 ^ worldObj.getSeed());
         double d = 0.25D;
         boolean flag = false;
         if(mapFeaturesEnabled)
@@ -749,4 +748,18 @@ public class ChunkProvider173
     {
         return "RandomLevelSource";
     }
+
+	@Override
+	public List getPossibleCreatures(EnumCreatureType var1, int var2, int var3,
+			int var4) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ChunkPosition findClosestStructure(World var1, String var2,
+			int var3, int var4, int var5) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
